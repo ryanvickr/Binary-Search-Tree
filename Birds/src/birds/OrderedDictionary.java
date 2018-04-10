@@ -12,12 +12,10 @@ package birds;
 public class OrderedDictionary implements OrderedDictionaryADT {
     
     private Node root;
-    private int size;
     
     //default constructor
     public OrderedDictionary(){
         this.root = null;
-        size = 0;
     }
     
     /* Returns the Record object with key k, or It throws a DictionaryException
@@ -70,6 +68,7 @@ public class OrderedDictionary implements OrderedDictionaryADT {
                 //insert in left if left is empty
                 if(currentRecord == null) {
                     currentRecord = newRecord;
+                    parentRecord.setLeft(currentRecord);
                     return;
                 }
             } else {
@@ -77,6 +76,7 @@ public class OrderedDictionary implements OrderedDictionaryADT {
                 //check in right if right is empty;
                 if(currentRecord == null) {
                     currentRecord = newRecord;
+                    parentRecord.setRight(currentRecord);
                     return;
                 }
             }
@@ -95,6 +95,8 @@ public class OrderedDictionary implements OrderedDictionaryADT {
         Node currentRecord = root;
         boolean isLeftChild = false;
         
+        if(root == null) { throw new DictionaryException("Empty dictionary."); }
+       
         while((currentRecord.getData().getDataKey().compareTo(k)) != 0) {
             parentRecord = currentRecord;
             
@@ -112,7 +114,6 @@ public class OrderedDictionary implements OrderedDictionaryADT {
         }
         
         //Case1: Node found, has no children
-        Node nullNode = new Node(null);
         if(currentRecord.getLeft() == null && currentRecord.getRight() == null) {
             if((currentRecord.getData().getDataKey().compareTo(root.getData().getDataKey())) == 0)
                 root = null;
@@ -142,7 +143,18 @@ public class OrderedDictionary implements OrderedDictionaryADT {
                 parentRecord.setRight(null);
             }
         }else if(currentRecord.getLeft() != null && currentRecord.getRight() != null) {
+            //call successor with data key?
+            Node successor = new Node(successor(currentRecord.getData().getDataKey()));
             
+            if((currentRecord.getData().getDataKey().compareTo(root.getData().getDataKey())) == 0)
+                root = successor;
+            else if(isLeftChild) {
+                parentRecord.setLeft(successor);
+            }else {
+                parentRecord.setRight(successor);
+            }
+            
+            successor.setLeft(currentRecord.getLeft());
         }
     }
     
@@ -155,15 +167,44 @@ public class OrderedDictionary implements OrderedDictionaryADT {
        @return BirdRecord
        @throws DictionaryException
      */
+    @Override
     public BirdRecord successor(DataKey k) throws DictionaryException {
+        BirdRecord searchResult = null;
+        
+        //find record
         try{
-            find(k);
-        } catch(DictionaryException ex){
-            throw new DictionaryException("There is no successor for the given + "
-                                            + "record key.");
+            searchResult = find(k);
+        }catch(DictionaryException ex){
+            throw new DictionaryException("There is no successor for the given record key");
         }
-        BirdRecord temp = new BirdRecord();
-        return temp;
+
+        //get node containing k
+        Node currentRecord = root;
+        while(currentRecord.getData() != searchResult){
+            if((currentRecord.getData().getDataKey().compareTo(k)) == 1)
+                currentRecord = currentRecord.getLeft();
+            else
+                currentRecord = currentRecord.getRight();
+        }
+
+        Node rightNode = currentRecord.getRight();
+
+        //Case 1: no right node
+        if(rightNode == null) {
+            currentRecord = currentRecord.getLeft();
+            return currentRecord.getData();
+        }
+
+        //Case 2: right node has no left node:
+        if(rightNode.getLeft() == null)
+            return rightNode.getData();
+
+        //Case 3: has right node
+        while(rightNode.getLeft() != null){
+            rightNode = rightNode.getLeft();
+        }
+
+        return rightNode.getData();
     }
     
     /* Returns the predecessor of k (the record from the ordered dictionary 

@@ -27,6 +27,8 @@ public class DataKey {
            return 0;
        else if(birdSize < k.birdSize) //****CHECK FOR PRECEDING
            return -1;
+       else if(birdSize == k.birdSize && (birdName.compareTo(k.birdName) < 0))
+           return -1;
        else
            return 1;
     }
@@ -45,5 +47,9 @@ public class DataKey {
      */
     public int getBirdSize(){
         return birdSize;
+    }
+    
+    public String getBirdName() {
+        return birdName;
     }
 }

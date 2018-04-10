@@ -50,9 +50,12 @@ public class OrderedDictionaryTest {
         }
         BirdRecord record;
         try {
+            //System.out.println("ppp");
             String expResult = records[3].getAbout();
             record = instance.find(new DataKey("Falcon",3));
+            System.out.println("got: " + record.getDataKey().getBirdName());
             String result = record.getAbout();
+            
             assertEquals(expResult, result);
         } catch (DictionaryException ex) {
              fail("Fail find test.");
