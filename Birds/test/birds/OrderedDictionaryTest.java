@@ -148,7 +148,7 @@ public class OrderedDictionaryTest {
         } catch (DictionaryException e) {
             fail("Fail Insertion test.");
         }
-            
+        
         BirdRecord record;
         try {
             String expResult = records[0].getAbout();
@@ -158,7 +158,7 @@ public class OrderedDictionaryTest {
         } catch (DictionaryException ex) {
             fail("Fail Predecessor test.");
         }
-
+        
         BirdRecord record2;
         try {
             String expResult2 = records[2].getAbout();
