@@ -172,6 +172,9 @@ public class OrderedDictionary implements OrderedDictionaryADT {
      */
     @Override
     public BirdRecord successor(DataKey k) throws DictionaryException {
+        
+        
+        
         BirdRecord searchResult = null;
         boolean isInDictionary = true;
         
@@ -186,7 +189,7 @@ public class OrderedDictionary implements OrderedDictionaryADT {
         
         //Case 0: datakey not in dictionary
         if(!isInDictionary) {
-            while(currentRecord.getData().getDataKey().compareTo(k) == -1 && currentRecord.getData() != null) {
+            while(currentRecord.getData().getDataKey().compareTo(k) == -1 && currentRecord != null) {
                 if((currentRecord.getData().getDataKey().compareTo(k)) == 1)
                     currentRecord = currentRecord.getLeft();
                 else
@@ -202,25 +205,31 @@ public class OrderedDictionary implements OrderedDictionaryADT {
             else
                 currentRecord = currentRecord.getRight();
         }
-
-        Node rightNode = currentRecord.getRight();
-
-        //Case 1: no right node
-        if(rightNode == null) {
-            currentRecord = currentRecord.getLeft();
+        
+        //case1: has right child:
+        if(currentRecord.getRight() != null) {
+            currentRecord = currentRecord.getRight();
+            while(currentRecord.getLeft() != null){
+                currentRecord = currentRecord.getLeft();
+            }
             return currentRecord.getData();
         }
-
-        //Case 2: right node has no left node:
-        if(rightNode.getLeft() == null)
-            return rightNode.getData();
-
-        //Case 3: has right node
-        while(rightNode.getLeft() != null){
-            rightNode = rightNode.getLeft();
+        
+        Node successor = null;
+        Node focusNode = root;
+        
+        while(focusNode != null){
+            if(k.compareTo(focusNode.getData().getDataKey()) == 0)
+                break;
+            else if(k.compareTo(focusNode.getData().getDataKey()) == -1) {
+                successor = focusNode;
+                focusNode = focusNode.getLeft();
+            }
+            else if(focusNode.getData().getDataKey().compareTo(k) == -1) {
+                focusNode = focusNode.getRight();
+            }
         }
-
-        return rightNode.getData();
+        return successor.getData();
     }
     
     /* Returns the predecessor of k (the record from the ordered dictionary 
@@ -232,7 +241,6 @@ public class OrderedDictionary implements OrderedDictionaryADT {
        @return BirdRecord
        @throws DictionaryException
      */
-     
     @Override
     public BirdRecord predecessor(DataKey k) throws DictionaryException {
         BirdRecord searchResult = null;
@@ -262,31 +270,37 @@ public class OrderedDictionary implements OrderedDictionaryADT {
 
         //get node containing 'k' and parent
         while(currentRecord.getData() != searchResult) {
-            parentRecord = currentRecord;
             if((currentRecord.getData().getDataKey().compareTo(k)) == 1)
                 currentRecord = currentRecord.getLeft();
             else
                 currentRecord = currentRecord.getRight();
         }
         
-        Node leftNode = currentRecord.getLeft();
+        Node predecessor = null;
+        Node focusNode = root;
         
-        //Case 1: no left node
-        if(leftNode == null) {
-            return parentRecord.getData();
+        //case 1: has left child
+        if(currentRecord.getLeft() != null) {
+            currentRecord = currentRecord.getLeft();
+            while(currentRecord.getRight() != null){
+                currentRecord = currentRecord.getRight();
+            }
+            return currentRecord.getData();
         }
         
-        //Case 2: left node has no right
-        if(leftNode.getRight() == null) {
-            return leftNode.getData();
+        //case2: no left child
+        while(focusNode != null) {
+            if(k.compareTo(focusNode.getData().getDataKey()) == 0)
+                break;
+            else if(k.compareTo(focusNode.getData().getDataKey()) == -1) {
+                focusNode = focusNode.getLeft();
+            }
+            else if(focusNode.getData().getDataKey().compareTo(k) == -1) {
+                predecessor = focusNode;
+                focusNode = focusNode.getRight();
+            }
         }
-        
-        //Case 3: left node has right node
-        while(leftNode.getRight() != null) {
-            leftNode = leftNode.getRight();
-        }
-        
-        return leftNode.getData();
+        return predecessor.getData();
     }
     
     /* Returns the record with smallest key in the ordered dictionary. 

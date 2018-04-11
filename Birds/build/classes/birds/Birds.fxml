@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="971.0" style="-fx-background-image: url(&quot;file:src/Birds/WesternBackground.png&quot;);" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="birds.BirdsController">
-   <top>
-      <MenuBar fx:id="mainMenu" BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                  <MenuItem mnemonicParsing="false" text="Fill Dictionary" />
-              <MenuItem mnemonicParsing="false" onAction="#exit" text="Close" />
-            </items>
-          </Menu>
-        </menus>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="birds.BirdsController">
+   <children>
+      <MenuBar fx:id="mainMenu" layoutY="2.0" prefHeight="25.0" prefWidth="688.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#loadDictionary" text="Fill Dictionary" />
+                  <MenuItem mnemonicParsing="false" onAction="#exit" text="Close" />
+               </items>
+            </Menu>
+         </menus>
       </MenuBar>
-   </top>
-</BorderPane>
+      <ImageView fx:id="imageView" fitHeight="211.0" fitWidth="286.0" layoutX="51.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="51.0" />
+      <Label fx:id="lblName" layoutX="41.0" layoutY="82.0" text="No Name Found." AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="82.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDescription" alignment="TOP_LEFT" layoutX="41.0" layoutY="114.0" prefHeight="96.0" prefWidth="532.0" text="No Description Found." wrapText="true" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="115.0" />
+      <Button layoutX="212.0" layoutY="44.0" mnemonicParsing="false" onAction="#first" prefHeight="38.0" prefWidth="61.0" text="First" AnchorPane.leftAnchor="212.0" AnchorPane.topAnchor="44.0" />
+      <Button layoutX="283.0" layoutY="44.0" mnemonicParsing="false" onAction="#previous" prefHeight="38.0" prefWidth="72.0" text="Previous" />
+      <Button layoutX="365.0" layoutY="44.0" mnemonicParsing="false" onAction="#next" prefHeight="38.0" prefWidth="51.0" text="Next" />
+      <Button layoutX="426.0" layoutY="44.0" mnemonicParsing="false" onAction="#last" prefHeight="38.0" prefWidth="51.0" text="Last" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="44.0" />
+      <Button layoutX="589.0" layoutY="143.0" mnemonicParsing="false" onAction="#delete" prefHeight="38.0" prefWidth="61.0" text="Delete" AnchorPane.rightAnchor="41.0" />
+      <Button layoutX="390.0" layoutY="258.0" mnemonicParsing="false" onAction="#play" prefHeight="96.0" prefWidth="105.0" text="Play" />
+      <Button layoutX="508.0" layoutY="258.0" mnemonicParsing="false" onAction="#stop" prefHeight="96.0" prefWidth="105.0" text="Stop" />
+      <Button layoutX="547.0" layoutY="420.0" mnemonicParsing="false" onAction="#find" text="Find" />
+   </children>
+</AnchorPane>
